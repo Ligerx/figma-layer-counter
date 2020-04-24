@@ -1,18 +1,26 @@
 import * as React from "react";
+import { LayerAndTypeCounts } from "../../layerCounter";
 import "../styles/figma-plugin-ds.min.css";
 import "../styles/ui.css";
 
-const App = ({}) => {
+function useMessageListenerEffect(setState) {
   React.useEffect(() => {
     window.onmessage = event => {
-      const { type, message } = event.data.pluginMessage;
-      if (type === "create-rectangles") {
-        console.log(`Figma Says: ${message}`);
-      }
+      setState(event.data.pluginMessage);
     };
   }, []);
+}
 
-  return <div></div>;
+const defaultState: LayerAndTypeCounts = { layerCount: 0, typeCounts: {} };
+
+const App = ({}) => {
+  const [layerAndTypeCounts, setLayerAndTypeCounts] = React.useState(
+    defaultState
+  );
+
+  useMessageListenerEffect(setLayerAndTypeCounts);
+
+  return <div>{JSON.stringify(layerAndTypeCounts)}</div>;
 };
 
 export default App;

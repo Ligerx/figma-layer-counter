@@ -3,7 +3,7 @@
 type SceneNodeType = Exclude<NodeType, "DOCUMENT" | "PAGE">;
 
 type TypeCounts = { [type in SceneNodeType]?: number };
-type LayerAndTypeCounts = { layerCount: number; typeCounts: TypeCounts };
+export type LayerAndTypeCounts = { layerCount: number; typeCounts: TypeCounts };
 
 /**
  * Counts the number of layers and layer types of the given nodes.

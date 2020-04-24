@@ -1,34 +1,28 @@
 import {
-  countLayersAndTypesForNodes,
-  countLayersAndTypesForNodesAndChildren
-} from "./layerCounter";
+  countLayersAndTypesForNodes
+  // countLayersAndTypesForNodesAndChildren
+} from "../layerCounter";
 
-// figma.notify("Layer Counter is working");
-
-// const nodes = figma.currentPage.selection;
-
-// const num = nodes.length;
-// const
-
-// figma.closePlugin();
+figma.showUI(__html__, {});
 
 // Send counts on init. This occurs before any selectionchange or currentpagechange events fire.
-// postCountsMessage(figma.currentPage.selection);
+postCountsMessage(figma.currentPage.selection);
 
 figma.on("selectionchange", () => {
-  // postCountsMessage(figma.currentPage.selection);
-  const typeCounts = countLayersAndTypesForNodes([
-    ...figma.currentPage.selection
-  ]);
-  const typeCounts2 = countLayersAndTypesForNodesAndChildren([
-    ...figma.currentPage.selection
-  ]);
-
-  console.log(JSON.stringify(typeCounts));
-  console.log(JSON.stringify(typeCounts2));
-  figma.notify(JSON.stringify(typeCounts));
+  postCountsMessage(figma.currentPage.selection);
 });
 
 figma.on("currentpagechange", () => {
-  // postCountsMessage(figma.currentPage.selection);
+  postCountsMessage(figma.currentPage.selection);
 });
+
+/**
+ * Post message to UI with the most up to date layer and layer type counts.
+ * @param nodes
+ */
+function postCountsMessage(nodes: readonly SceneNode[]) {
+  // Figma returns `readonly SceneNode[]` from figma.currentPage.selection,
+  // so we manually copy the array to create a mutable version of it.
+  const counts = countLayersAndTypesForNodes([...nodes]);
+  figma.ui.postMessage(counts);
+}
