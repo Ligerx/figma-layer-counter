@@ -3,40 +3,47 @@
 type SceneNodeType = Exclude<NodeType, "DOCUMENT" | "PAGE">;
 
 type TypeCounts = { [type in SceneNodeType]?: number };
+type LayerAndTypeCounts = { layerCount: number; typeCounts: TypeCounts };
 
 /**
- * Counts the number of layer types of the given nodes.
+ * Counts the number of layers and layer types of the given nodes.
  * @param nodes
  * @returns TypeCounts object
  */
-export function countLayerTypesForNodes(nodes: SceneNode[]): TypeCounts {
+export function countLayerTypesForNodes(
+  nodes: SceneNode[]
+): LayerAndTypeCounts {
   const obj: TypeCounts = {};
 
-  const layerTypeCounts = nodes.reduce((accumulator, node) => {
+  const typeCounts = nodes.reduce((accumulator, node) => {
     accumulator[node.type] = (accumulator[node.type] ?? 0) + 1;
     return accumulator;
   }, obj);
 
-  return layerTypeCounts;
+  const layerCount = nodes.length;
+
+  return { layerCount, typeCounts };
 }
 
 /**
- * Counts the number of layer types of the given nodes. This includes all children of nodes.
+ * Counts the number of layers and layer types of the given nodes. This includes all children of nodes.
  * @param nodes
  * @returns TypeCounts object
  */
 export function countLayerTypesForNodesAndChildren(
   nodes: SceneNode[]
-): TypeCounts {
+): LayerAndTypeCounts {
   const allNodes = nodes.flatMap(getNodeAndAllChildren);
   const obj: TypeCounts = {};
 
-  const layerTypeCounts = allNodes.reduce((accumulator, node) => {
+  const typeCounts = allNodes.reduce((accumulator, node) => {
     accumulator[node.type] = (accumulator[node.type] ?? 0) + 1;
     return accumulator;
   }, obj);
 
-  return layerTypeCounts;
+  const layerCount = allNodes.length;
+
+  return { layerCount, typeCounts };
 }
 
 function getNodeAndAllChildren(node: SceneNode): SceneNode[] {
