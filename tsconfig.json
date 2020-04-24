@@ -8,6 +8,7 @@
     "experimentalDecorators": true,
     "removeComments": true,
     "noImplicitAny": false,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "lib": ["DOM", "ES6", "DOM.Iterable", "ScriptHost", "ESNext.Array"]
   }
 }
