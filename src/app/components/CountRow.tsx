@@ -7,19 +7,24 @@ type Props = {
 };
 
 const typeToIcon = {
-  SLICE: "icon--", //TODO
+  // icons included in figma-plugin-ds
   FRAME: "icon--frame",
   GROUP: "icon--group",
   COMPONENT: "icon--component",
   INSTANCE: "icon--instance",
-  BOOLEAN_OPERATION: "icon--",
-  VECTOR: "icon--vector-handles", // close enough icon
   STAR: "icon--star-off",
-  LINE: "icon--minus", // close enough icon
-  ELLIPSE: "icon--", // TODO
-  POLYGON: "icon--", // TODO
-  RECTANGLE: "icon--", // TODO
-  TEXT: "icon--type"
+  TEXT: "icon--type",
+
+  // icons that had something close enough in figma-plugin-ds
+  VECTOR: "icon--vector-handles",
+  LINE: "icon--minus",
+
+  // custom icons
+  SLICE: "icon--slice",
+  ELLIPSE: "icon--ellipse",
+  POLYGON: "icon--polygon",
+  RECTANGLE: "icon--rectangle",
+  BOOLEAN_OPERATION: "icon--boolean-operation"
 };
 
 const CountRow = ({ type, count, ...otherProps }: Props) => {
