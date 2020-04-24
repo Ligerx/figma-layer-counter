@@ -1,6 +1,6 @@
 // List of node types from the figma plugin api
 // https://www.figma.com/plugin-docs/api/nodes/
-type SceneNodeType = Exclude<NodeType, "DOCUMENT" | "PAGE">;
+export type SceneNodeType = Exclude<NodeType, "DOCUMENT" | "PAGE">;
 
 type TypeCounts = { [type in SceneNodeType]?: number };
 export type LayerAndTypeCounts = { layerCount: number; typeCounts: TypeCounts };

@@ -1,5 +1,6 @@
 import * as React from "react";
-import { LayerAndTypeCounts, macroCaseToTitleCase } from "../../layerCounter";
+import { SceneNodeType, LayerAndTypeCounts } from "../../layerCounter";
+import CountRow from "./CountRow";
 import "../styles/figma-plugin-ds.min.css";
 import "../styles/ui.css";
 
@@ -30,17 +31,27 @@ const App = ({}) => {
       // Fall back on sorting alphabetically
       return aKey.localeCompare(bKey);
     }
-  );
+  ) as [SceneNodeType, number][];
 
   return (
     <div>
       <div>Selected Layers: {layerCount}</div>
+
       <div>
         {blah.map(([type, count]) => (
-          <div key={type}>
-            {macroCaseToTitleCase(type)}: {count}
-          </div>
+          <CountRow key={type} type={type} count={count} />
         ))}
+      </div>
+
+      <div className="checkbox">
+        <input
+          className="checkbox__box"
+          type="checkbox"
+          id="include-children-checkbox"
+        />
+        <label className="checkbox__label" htmlFor="include-children-checkbox">
+          Include nested layers
+        </label>
       </div>
     </div>
   );
