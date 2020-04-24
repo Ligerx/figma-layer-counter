@@ -1,6 +1,11 @@
 body {
   font: 12px "Inter", sans-serif;
-  margin: 16px 24px;
+  padding: 8px 24px;
+  margin: 0;
+}
+
+.nested-layers-checkbox {
+  margin-left: -10px;
 }
 
 .count-row {
@@ -21,7 +26,7 @@ body {
 }
 
 .layer-count {
-  margin-top: 8px;
+  margin-top: 4px;
   margin-bottom: 8px;
 }
 

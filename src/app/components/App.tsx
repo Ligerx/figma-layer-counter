@@ -21,7 +21,7 @@ const App = ({}) => {
 
   useMessageListenerEffect(setLayerAndTypeCounts);
 
-  const blah = Object.entries(typeCounts).sort(
+  const sortedCounts = Object.entries(typeCounts).sort(
     ([aKey, aValue], [bKey, bValue]) => {
       // Sort by layer count descending
       if (bValue !== aValue) {
@@ -35,6 +35,17 @@ const App = ({}) => {
 
   return (
     <div>
+      <div className="nested-layers-checkbox checkbox">
+        <input
+          className="checkbox__box"
+          type="checkbox"
+          id="include-children-checkbox"
+        />
+        <label className="checkbox__label" htmlFor="include-children-checkbox">
+          Include nested layers
+        </label>
+      </div>
+
       <div className="count-row layer-count">
         <p className="count-row-type type type--pos-large-bold">
           Selected Layers
@@ -45,20 +56,9 @@ const App = ({}) => {
       </div>
 
       <div>
-        {blah.map(([type, count]) => (
+        {sortedCounts.map(([type, count]) => (
           <CountRow key={type} type={type} count={count} />
         ))}
-      </div>
-
-      <div className="checkbox">
-        <input
-          className="checkbox__box"
-          type="checkbox"
-          id="include-children-checkbox"
-        />
-        <label className="checkbox__label" htmlFor="include-children-checkbox">
-          Include nested layers
-        </label>
       </div>
     </div>
   );

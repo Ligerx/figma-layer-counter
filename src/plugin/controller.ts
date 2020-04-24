@@ -3,7 +3,7 @@ import {
   // countLayersAndTypesForNodesAndChildren
 } from "../layerCounter";
 
-figma.showUI(__html__, {});
+figma.showUI(__html__, { width: 240, height: 300 });
 
 // Send counts on init. This occurs before any selectionchange or currentpagechange events fire.
 postCountsMessage(figma.currentPage.selection);
