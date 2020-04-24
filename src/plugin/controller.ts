@@ -1,4 +1,7 @@
-import { countLayerTypesForNodes } from "./layerCounter";
+import {
+  countLayersAndTypesForNodes,
+  countLayersAndTypesForNodesAndChildren
+} from "./layerCounter";
 
 // figma.notify("Layer Counter is working");
 
@@ -14,7 +17,15 @@ import { countLayerTypesForNodes } from "./layerCounter";
 
 figma.on("selectionchange", () => {
   // postCountsMessage(figma.currentPage.selection);
-  const typeCounts = countLayerTypesForNodes([...figma.currentPage.selection]);
+  const typeCounts = countLayersAndTypesForNodes([
+    ...figma.currentPage.selection
+  ]);
+  const typeCounts2 = countLayersAndTypesForNodesAndChildren([
+    ...figma.currentPage.selection
+  ]);
+
+  console.log(JSON.stringify(typeCounts));
+  console.log(JSON.stringify(typeCounts2));
   figma.notify(JSON.stringify(typeCounts));
 });
 

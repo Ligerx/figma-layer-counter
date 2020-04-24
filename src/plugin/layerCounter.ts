@@ -10,7 +10,7 @@ type LayerAndTypeCounts = { layerCount: number; typeCounts: TypeCounts };
  * @param nodes
  * @returns TypeCounts object
  */
-export function countLayerTypesForNodes(
+export function countLayersAndTypesForNodes(
   nodes: SceneNode[]
 ): LayerAndTypeCounts {
   const obj: TypeCounts = {};
@@ -30,7 +30,7 @@ export function countLayerTypesForNodes(
  * @param nodes
  * @returns TypeCounts object
  */
-export function countLayerTypesForNodesAndChildren(
+export function countLayersAndTypesForNodesAndChildren(
   nodes: SceneNode[]
 ): LayerAndTypeCounts {
   const allNodes = nodes.flatMap(getNodeAndAllChildren);
