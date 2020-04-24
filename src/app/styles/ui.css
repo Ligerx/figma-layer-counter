@@ -2,3 +2,21 @@ body {
   font: 12px "Inter", sans-serif;
   margin: 16px 24px;
 }
+
+.count-row {
+  display: flex;
+  align-items: center;
+}
+
+.count-row p {
+  margin: 0;
+}
+
+.count-row-type {
+  flex-grow: 1;
+}
+
+.layer-count {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}

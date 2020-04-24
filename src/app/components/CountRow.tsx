@@ -6,12 +6,14 @@ type Props = {
   count: number;
 };
 
-const CountRow = ({ type, count }: Props) => {
+const CountRow = ({ type, count, ...otherProps }: Props) => {
   return (
-    <div>
-      <div>icon</div>
-      <div>{macroCaseToTitleCase(type)}</div>
-      <div>{count}</div>
+    <div className="count-row" {...otherProps}>
+      <div className="icon icon--adjust"></div>
+      <p className="count-row-type type type--pos-medium-normal">
+        {macroCaseToTitleCase(type)}
+      </p>
+      <p className="count-row-count type type--pos-medium-normal">{count}</p>
     </div>
   );
 };

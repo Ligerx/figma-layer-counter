@@ -35,7 +35,14 @@ const App = ({}) => {
 
   return (
     <div>
-      <div>Selected Layers: {layerCount}</div>
+      <div className="count-row layer-count">
+        <p className="count-row-type type type--pos-large-bold">
+          Selected Layers
+        </p>
+        <p className="count-row-count type type--pos-large-bold">
+          {layerCount}
+        </p>
+      </div>
 
       <div>
         {blah.map(([type, count]) => (
