@@ -12,6 +12,10 @@ body {
   margin: 0;
 }
 
+.count-icon {
+  margin-right: 4px;
+}
+
 .count-row-type {
   flex-grow: 1;
 }
