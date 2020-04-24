@@ -34,7 +34,7 @@ const App = ({}) => {
   ) as [SceneNodeType, number][];
 
   return (
-    <div>
+    <div className="app">
       <div className="nested-layers-checkbox checkbox">
         <input
           className="checkbox__box"
@@ -46,19 +46,27 @@ const App = ({}) => {
         </label>
       </div>
 
-      <div className="count-row layer-count">
-        <p className="count-row-type type type--pos-large-bold">
-          Selected Layers
-        </p>
-        <p className="count-row-count type type--pos-large-bold">
-          {layerCount}
-        </p>
+      <div className="counts-container">
+        <div className="count-row layer-count">
+          <p className="count-row-type type type--pos-large-bold">
+            Selected Layers
+          </p>
+          <p className="count-row-count type type--pos-large-bold">
+            {layerCount}
+          </p>
+        </div>
+
+        <div>
+          {sortedCounts.map(([type, count]) => (
+            <CountRow key={type} type={type} count={count} />
+          ))}
+        </div>
       </div>
 
-      <div>
-        {sortedCounts.map(([type, count]) => (
-          <CountRow key={type} type={type} count={count} />
-        ))}
+      <div className="github">
+        <a href="https://github.com/Ligerx/figma-layer-counter" target="_blank">
+          GitHub
+        </a>
       </div>
     </div>
   );

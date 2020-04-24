@@ -4,6 +4,21 @@ body {
   margin: 0;
 }
 
+body,
+.react-page,
+.app {
+  min-height: 100%;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+}
+
+.counts-container {
+  flex-grow: 1;
+}
+
 .nested-layers-checkbox {
   margin-left: -10px;
 }
@@ -28,6 +43,17 @@ body {
 .layer-count {
   margin-top: 4px;
   margin-bottom: 8px;
+}
+
+.github {
+  text-align: center;
+  font-size: 12px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.github a:link {
+  color: #5e6a75;
 }
 
 /*
