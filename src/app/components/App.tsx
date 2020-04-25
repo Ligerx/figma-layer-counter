@@ -25,6 +25,7 @@ const App = ({}) => {
       }
     };
   }, [setShouldCountChildren, setLayerAndTypeCounts]);
+  // ======
 
   const onCheckboxClick = () => {
     parent.postMessage(
