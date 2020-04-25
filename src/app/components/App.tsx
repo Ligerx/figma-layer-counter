@@ -4,22 +4,42 @@ import CountRow from "./CountRow";
 import "../styles/figma-plugin-ds.min.css";
 import "../styles/ui.css";
 
-function useMessageListenerEffect(setState) {
-  React.useEffect(() => {
-    window.onmessage = event => {
-      setState(event.data.pluginMessage);
-    };
-  }, []);
-}
-
 const defaultState: LayerAndTypeCounts = { layerCount: 0, typeCounts: {} };
 
 const App = ({}) => {
   const [{ layerCount, typeCounts }, setLayerAndTypeCounts] = React.useState(
     defaultState
   );
+  const [shouldCountChildren, setShouldCountChildren] = React.useState(false);
 
-  useMessageListenerEffect(setLayerAndTypeCounts);
+  // ===================================
+  // Initialize plugin message listeners
+  // ===================================
+  React.useEffect(() => {
+    window.onmessage = event => {
+      const { type, message } = event.data.pluginMessage;
+      if (type === "shouldCountChildren") {
+        setShouldCountChildren(message);
+      } else if (type === "updateCounts") {
+        setLayerAndTypeCounts(message);
+      }
+    };
+  }, [setShouldCountChildren, setLayerAndTypeCounts]);
+
+  const onCheckboxClick = () => {
+    parent.postMessage(
+      {
+        pluginMessage: {
+          type: "toggleCountChildren",
+          message: !shouldCountChildren
+        }
+      },
+      "*"
+    );
+
+    // Eagerly updating the checkbox state
+    setShouldCountChildren(!shouldCountChildren);
+  };
 
   const sortedCounts = Object.entries(typeCounts).sort(
     ([aKey, aValue], [bKey, bValue]) => {
@@ -40,6 +60,8 @@ const App = ({}) => {
           className="checkbox__box"
           type="checkbox"
           id="include-children-checkbox"
+          onChange={onCheckboxClick}
+          checked={shouldCountChildren}
         />
         <label className="checkbox__label" htmlFor="include-children-checkbox">
           Include nested layers
