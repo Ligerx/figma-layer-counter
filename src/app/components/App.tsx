@@ -24,7 +24,7 @@ const App = ({}) => {
         setLayerAndTypeCounts(message);
       }
     };
-  }, [setShouldCountChildren, setLayerAndTypeCounts]);
+  }, []);
   // ======
 
   const onCheckboxClick = () => {
