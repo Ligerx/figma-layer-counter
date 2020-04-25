@@ -958,9 +958,9 @@ crypto-browserify@^3.11.0:
     randomfill "^1.0.3"
 
 css-loader@^3.1.0:
-  version "3.5.2"
-  resolved "https://registry.yarnpkg.com/css-loader/-/css-loader-3.5.2.tgz#6483ae56f48a7f901fbe07dde2fc96b01eafab3c"
-  integrity sha512-hDL0DPopg6zQQSRlZm0hyeaqIRnL0wbWjay9BZxoiJBpbfOW4WHfbaYQhwnDmEa0kZUc1CJ3IFo15ot1yULMIQ==
+  version "3.5.3"
+  resolved "https://registry.yarnpkg.com/css-loader/-/css-loader-3.5.3.tgz#95ac16468e1adcd95c844729e0bb167639eb0bcf"
+  integrity sha512-UEr9NH5Lmi7+dguAm+/JSPovNjYbm2k3TK58EiwQHzOHH5Jfq1Y+XoP2bQO6TMn7PptMd0opxxedAWcaSTRKHw==
   dependencies:
     camelcase "^5.3.1"
     cssesc "^3.0.0"
@@ -973,7 +973,7 @@ css-loader@^3.1.0:
     postcss-modules-scope "^2.2.0"
     postcss-modules-values "^3.0.0"
     postcss-value-parser "^4.0.3"
-    schema-utils "^2.6.5"
+    schema-utils "^2.6.6"
     semver "^6.3.0"
 
 css-select@^1.1.0:
@@ -3627,7 +3627,7 @@ schema-utils@^1.0.0:
     ajv-errors "^1.0.0"
     ajv-keywords "^3.1.0"
 
-schema-utils@^2.5.0, schema-utils@^2.6.5:
+schema-utils@^2.5.0, schema-utils@^2.6.6:
   version "2.6.6"
   resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-2.6.6.tgz#299fe6bd4a3365dc23d99fd446caff8f1d6c330c"
   integrity sha512-wHutF/WPSbIi9x6ctjGGk2Hvl0VOz5l3EKEuKbjPlB30mKZUzb9A5k9yEXRX3pwyqVLPvpfZZEllaFq/M718hA==
@@ -3774,9 +3774,9 @@ source-map-resolve@^0.5.0:
     urix "^0.1.0"
 
 source-map-support@~0.5.12:
-  version "0.5.18"
-  resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.5.18.tgz#f5f33489e270bd7f7d7e7b8debf283f3a4066960"
-  integrity sha512-9luZr/BZ2QeU6tO2uG8N2aZpVSli4TSAOAqFOyTO51AJcD9P99c0K1h6dD6r6qo5dyT44BR5exweOaLLeldTkQ==
+  version "0.5.19"
+  resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.5.19.tgz#a98b62f86dcaf4f67399648c085291ab9e8fed61"
+  integrity sha512-Wonm7zOCIJzBGQdB+thsPar0kYuCIzYvxZwlBa87yi/Mdjv7Tip2cyVbLj5o0cFPN4EVkuTwb3GDDyUx2DGnGw==
   dependencies:
     buffer-from "^1.0.0"
     source-map "^0.6.0"
@@ -4071,9 +4071,9 @@ terser-webpack-plugin@^1.4.3:
     worker-farm "^1.7.0"
 
 terser@^4.1.2:
-  version "4.6.11"
-  resolved "https://registry.yarnpkg.com/terser/-/terser-4.6.11.tgz#12ff99fdd62a26de2a82f508515407eb6ccd8a9f"
-  integrity sha512-76Ynm7OXUG5xhOpblhytE7X58oeNSmC8xnNhjWVo8CksHit0U0kO4hfNbPrrYwowLWFgM2n9L176VNx2QaHmtA==
+  version "4.6.12"
+  resolved "https://registry.yarnpkg.com/terser/-/terser-4.6.12.tgz#44b98aef8703fdb09a3491bf79b43faffc5b4fee"
+  integrity sha512-fnIwuaKjFPANG6MAixC/k1TDtnl1YlPLUlLVIxxGZUn1gfUx2+l3/zGNB72wya+lgsb50QBi2tUV75RiODwnww==
   dependencies:
     commander "^2.20.0"
     source-map "~0.6.1"
