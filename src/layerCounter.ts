@@ -1,14 +1,13 @@
-// List of node types from the figma plugin api
-// https://www.figma.com/plugin-docs/api/nodes/
-export type SceneNodeType = Exclude<NodeType, "DOCUMENT" | "PAGE">;
+// List of node types can be found at https://github.com/figma/plugin-typings
+// Their docs website isn't always up to date.
+// Type list sometimes updates, so I won't always have the necessary icons to differentiate.
+export type SceneNodeType = SceneNode["type"]; // convert types to string
 
 type TypeCounts = { [type in SceneNodeType]?: number };
 export type LayerAndTypeCounts = { layerCount: number; typeCounts: TypeCounts };
 
 /**
  * Counts the number of layers and layer types of the given nodes.
- * @param nodes
- * @returns TypeCounts object
  */
 export function countLayersAndTypesForNodes(
   nodes: SceneNode[]
@@ -27,8 +26,6 @@ export function countLayersAndTypesForNodes(
 
 /**
  * Counts the number of layers and layer types of the given nodes. This includes all children of nodes.
- * @param nodes
- * @returns TypeCounts object
  */
 export function countLayersAndTypesForNodesAndChildren(
   nodes: SceneNode[]
@@ -56,8 +53,6 @@ function getNodeAndAllChildren(node: SceneNode): SceneNode[] {
 
 /**
  * Type guard that checks if a node supports children.
- * @param node The node to check if it supports children.
- * @returns If `node` supports children or not.
  */
 function supportsChildren(
   node: SceneNode
@@ -75,8 +70,6 @@ function supportsChildren(
  * Takes a macro case formatted string and returns a title case formatted string.
  *
  * eg. `BOOLEAN_OPERATION` becomes `Boolean Operation`.
- * @param string
- * @returns Title case string
  */
 export function macroCaseToTitleCase(string: string): string {
   return string

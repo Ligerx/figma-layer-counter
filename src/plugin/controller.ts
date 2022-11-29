@@ -45,7 +45,6 @@ figma.ui.onmessage = ({ type, message }) => {
 
 /**
  * Post message to UI with the most up to date layer and layer type counts.
- * @param nodes
  */
 function postCountsMessage(
   nodes: readonly SceneNode[],
@@ -67,7 +66,6 @@ function postCountsMessage(
 /**
  * Post message to UI with the shouldCountChildren setting.
  * UI is handling it's own eager state update, so this only needs to be called once on initialization.
- * @param nodes
  */
 function postShouldCountChildrenMessage(initValue: boolean) {
   figma.ui.postMessage({ type: "shouldCountChildren", message: initValue });
