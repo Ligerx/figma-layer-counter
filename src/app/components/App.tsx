@@ -1,31 +1,28 @@
 import * as React from "react";
-import { SceneNodeType, LayerAndTypeCounts } from "../../layerCounter";
+import { SceneNodeType, TypeCounts } from "../../layerCounter";
 import CountRow from "./CountRow";
 import "../styles/figma-plugin-ds.min.css";
 import "../styles/ui.css";
 
-const defaultState: LayerAndTypeCounts = { layerCount: 0, typeCounts: {} };
+function typeCountsTotal(typeCounts: TypeCounts): number {
+  return Object.values(typeCounts).reduce((a, b) => a + b, 0);
+}
 
 const App = ({}) => {
-  const [{ layerCount, typeCounts }, setLayerAndTypeCounts] = React.useState(
-    defaultState
-  );
+  const [typeCounts, setTypeCounts] = React.useState<TypeCounts>({});
   const [shouldCountChildren, setShouldCountChildren] = React.useState(false);
 
-  // ===================================
   // Initialize plugin message listeners
-  // ===================================
   React.useEffect(() => {
     window.onmessage = event => {
       const { type, message } = event.data.pluginMessage;
       if (type === "shouldCountChildren") {
         setShouldCountChildren(message);
       } else if (type === "updateCounts") {
-        setLayerAndTypeCounts(message);
+        setTypeCounts(message);
       }
     };
   }, []);
-  // ======
 
   const onCheckboxClick = () => {
     parent.postMessage(
@@ -75,7 +72,7 @@ const App = ({}) => {
             Selected Layers
           </p>
           <p className="count-row-count type type--pos-large-bold">
-            {layerCount}
+            {typeCountsTotal(typeCounts)}
           </p>
         </div>
 

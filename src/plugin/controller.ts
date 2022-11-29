@@ -1,6 +1,6 @@
 import {
-  countLayersAndTypesForNodes,
-  countLayersAndTypesForNodesAndChildren
+  countTypesForNodes,
+  countTypesForNodesAndChildren
 } from "../layerCounter";
 
 // =============================================
@@ -55,9 +55,9 @@ function postCountsMessage(
   let counts;
 
   if (shouldCountChildren) {
-    counts = countLayersAndTypesForNodesAndChildren([...nodes]);
+    counts = countTypesForNodesAndChildren([...nodes]);
   } else {
-    counts = countLayersAndTypesForNodes([...nodes]);
+    counts = countTypesForNodes([...nodes]);
   }
 
   figma.ui.postMessage({ type: "updateCounts", message: counts });

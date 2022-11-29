@@ -2,16 +2,9 @@
 // Their docs website isn't always up to date.
 // Type list sometimes updates, so I won't always have the necessary icons to differentiate.
 export type SceneNodeType = SceneNode["type"]; // convert types to string
+export type TypeCounts = { [type in SceneNodeType]?: number };
 
-type TypeCounts = { [type in SceneNodeType]?: number };
-export type LayerAndTypeCounts = { layerCount: number; typeCounts: TypeCounts };
-
-/**
- * Counts the number of layers and layer types of the given nodes.
- */
-export function countLayersAndTypesForNodes(
-  nodes: SceneNode[]
-): LayerAndTypeCounts {
+export function countTypesForNodes(nodes: SceneNode[]): TypeCounts {
   const obj: TypeCounts = {};
 
   const typeCounts = nodes.reduce((accumulator, node) => {
@@ -19,17 +12,10 @@ export function countLayersAndTypesForNodes(
     return accumulator;
   }, obj);
 
-  const layerCount = nodes.length;
-
-  return { layerCount, typeCounts };
+  return typeCounts;
 }
 
-/**
- * Counts the number of layers and layer types of the given nodes. This includes all children of nodes.
- */
-export function countLayersAndTypesForNodesAndChildren(
-  nodes: SceneNode[]
-): LayerAndTypeCounts {
+export function countTypesForNodesAndChildren(nodes: SceneNode[]): TypeCounts {
   const allNodes = nodes.flatMap(getNodeAndAllChildren);
   const obj: TypeCounts = {};
 
@@ -38,9 +24,7 @@ export function countLayersAndTypesForNodesAndChildren(
     return accumulator;
   }, obj);
 
-  const layerCount = allNodes.length;
-
-  return { layerCount, typeCounts };
+  return typeCounts;
 }
 
 function getNodeAndAllChildren(node: SceneNode): SceneNode[] {
