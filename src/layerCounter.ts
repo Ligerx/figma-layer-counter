@@ -37,16 +37,28 @@ function getNodeAndAllChildren(node: SceneNode): SceneNode[] {
 
 /**
  * Type guard that checks if a node supports children.
+ * Based on types from https://www.figma.com/plugin-docs/api/properties/nodes-children,
+ * but no guarantees it's always accurate or up to date.
+ * Unsure if there's a more elegant way to handle this.
  */
 function supportsChildren(
   node: SceneNode
-): node is FrameNode | ComponentNode | InstanceNode | BooleanOperationNode {
+): node is
+  | FrameNode
+  | GroupNode
+  | ComponentNode
+  | InstanceNode
+  | BooleanOperationNode
+  | ComponentSetNode
+  | SectionNode {
   return (
     node.type === "FRAME" ||
     node.type === "GROUP" ||
     node.type === "COMPONENT" ||
     node.type === "INSTANCE" ||
-    node.type === "BOOLEAN_OPERATION"
+    node.type === "BOOLEAN_OPERATION" ||
+    node.type === "COMPONENT_SET" ||
+    node.type === "SECTION"
   );
 }
 
