@@ -9,6 +9,6 @@
     "removeComments": true,
     "noImplicitAny": false,
     "moduleResolution": "node",
-    "lib": ["DOM", "ES6", "DOM.Iterable", "ScriptHost", "ESNext.Array"]
+    "lib": ["DOM", "ES6", "DOM.Iterable", "ScriptHost", "ESNext.Array", "ES2019"]
   }
 }
