@@ -10,7 +10,10 @@ function typeCountsTotal(typeCounts: TypeCounts): number {
 
 const App = ({}) => {
   const [typeCounts, setTypeCounts] = React.useState<TypeCounts>({});
-  const [shouldCountChildren, setShouldCountChildren] = React.useState(false);
+  const [shouldCountChildren, setShouldCountChildren] = React.useState(true);
+  const [shouldIncludeVariants, setShouldIncludeVariants] = React.useState(
+    false
+  );
 
   // Initialize plugin message listeners
   React.useEffect(() => {
@@ -18,13 +21,15 @@ const App = ({}) => {
       const { type, message } = event.data.pluginMessage;
       if (type === "shouldCountChildren") {
         setShouldCountChildren(message);
+      } else if (type === "shouldIncludeVariants") {
+        setShouldIncludeVariants(message);
       } else if (type === "updateCounts") {
         setTypeCounts(message);
       }
     };
   }, []);
 
-  const onCheckboxClick = () => {
+  const onNestedLayersClick = () => {
     parent.postMessage(
       {
         pluginMessage: {
@@ -34,9 +39,22 @@ const App = ({}) => {
       },
       "*"
     );
-
     // Eagerly updating the checkbox state
     setShouldCountChildren(!shouldCountChildren);
+  };
+
+  const onVariantsClick = () => {
+    parent.postMessage(
+      {
+        pluginMessage: {
+          type: "toggleIncludeVariants",
+          message: !shouldIncludeVariants
+        }
+      },
+      "*"
+    );
+    // Eagerly updating the checkbox state
+    setShouldIncludeVariants(!shouldIncludeVariants);
   };
 
   const sortedCounts = Object.entries(typeCounts).sort(
@@ -53,19 +71,6 @@ const App = ({}) => {
 
   return (
     <div className="app">
-      <div className="nested-layers-checkbox checkbox">
-        <input
-          className="checkbox__box"
-          type="checkbox"
-          id="include-children-checkbox"
-          onChange={onCheckboxClick}
-          checked={shouldCountChildren}
-        />
-        <label className="checkbox__label" htmlFor="include-children-checkbox">
-          Include nested layers
-        </label>
-      </div>
-
       <div className="counts-container">
         <div className="count-row layer-count">
           <p className="count-row-type type type--pos-large-bold">
@@ -81,6 +86,32 @@ const App = ({}) => {
             <CountRow key={type} type={type} count={count} />
           ))}
         </div>
+      </div>
+
+      <div className="checkbox">
+        <input
+          className="checkbox__box"
+          type="checkbox"
+          id="include-children-checkbox"
+          onChange={onNestedLayersClick}
+          checked={shouldCountChildren}
+        />
+        <label className="checkbox__label" htmlFor="include-children-checkbox">
+          Include nested layers
+        </label>
+      </div>
+
+      <div className="checkbox">
+        <input
+          className="checkbox__box"
+          type="checkbox"
+          id="include-variants-checkbox"
+          onChange={onVariantsClick}
+          checked={shouldIncludeVariants}
+        />
+        <label className="checkbox__label" htmlFor="include-variants-checkbox">
+          Include variants
+        </label>
       </div>
 
       <div className="github">

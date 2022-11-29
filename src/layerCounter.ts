@@ -4,13 +4,14 @@
 export type SceneNodeType = SceneNode["type"]; // convert types to string
 export type TypeCounts = { [type in SceneNodeType]?: number };
 
-type Settings = {
+export type CountSettings = {
   shouldCountChildren: boolean;
+  shouldIncludeVariants: boolean;
 };
 
 export function countTypesForNodes(
   nodes: SceneNode[],
-  { shouldCountChildren = true }: Settings
+  { shouldCountChildren, shouldIncludeVariants }: CountSettings
 ): TypeCounts {
   const obj: TypeCounts = {};
 
@@ -18,6 +19,9 @@ export function countTypesForNodes(
   if (shouldCountChildren) {
     _nodes = nodes.flatMap(getNodeAndAllChildren);
   }
+
+  // TODO handle variant logic
+  shouldIncludeVariants;
 
   const typeCounts = _nodes.reduce((accumulator, node) => {
     accumulator[node.type] = (accumulator[node.type] ?? 0) + 1;
