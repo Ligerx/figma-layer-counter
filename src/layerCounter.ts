@@ -4,22 +4,22 @@
 export type SceneNodeType = SceneNode["type"]; // convert types to string
 export type TypeCounts = { [type in SceneNodeType]?: number };
 
-export function countTypesForNodes(nodes: SceneNode[]): TypeCounts {
+type Settings = {
+  shouldCountChildren: boolean;
+};
+
+export function countTypesForNodes(
+  nodes: SceneNode[],
+  { shouldCountChildren = true }: Settings
+): TypeCounts {
   const obj: TypeCounts = {};
 
-  const typeCounts = nodes.reduce((accumulator, node) => {
-    accumulator[node.type] = (accumulator[node.type] ?? 0) + 1;
-    return accumulator;
-  }, obj);
+  let _nodes = nodes;
+  if (shouldCountChildren) {
+    _nodes = nodes.flatMap(getNodeAndAllChildren);
+  }
 
-  return typeCounts;
-}
-
-export function countTypesForNodesAndChildren(nodes: SceneNode[]): TypeCounts {
-  const allNodes = nodes.flatMap(getNodeAndAllChildren);
-  const obj: TypeCounts = {};
-
-  const typeCounts = allNodes.reduce((accumulator, node) => {
+  const typeCounts = _nodes.reduce((accumulator, node) => {
     accumulator[node.type] = (accumulator[node.type] ?? 0) + 1;
     return accumulator;
   }, obj);

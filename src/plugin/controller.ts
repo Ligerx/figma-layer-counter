@@ -1,7 +1,4 @@
-import {
-  countTypesForNodes,
-  countTypesForNodesAndChildren
-} from "../layerCounter";
+import { countTypesForNodes } from "../layerCounter";
 
 // =============================================
 // Initialize shouldCountChildren and first load
@@ -43,6 +40,8 @@ figma.ui.onmessage = ({ type, message }) => {
   }
 };
 
+// ------------------------------------
+
 /**
  * Post message to UI with the most up to date layer and layer type counts.
  */
@@ -50,15 +49,9 @@ function postCountsMessage(
   nodes: readonly SceneNode[],
   shouldCountChildren: boolean
 ) {
-  // Figma returns `readonly SceneNode[]` from figma.currentPage.selection,
+  // figma.currentPage.selection returns `readonly SceneNode[]`,
   // so we manually copy the array to create a mutable version of it.
-  let counts;
-
-  if (shouldCountChildren) {
-    counts = countTypesForNodesAndChildren([...nodes]);
-  } else {
-    counts = countTypesForNodes([...nodes]);
-  }
+  const counts = countTypesForNodes([...nodes], { shouldCountChildren });
 
   figma.ui.postMessage({ type: "updateCounts", message: counts });
 }
