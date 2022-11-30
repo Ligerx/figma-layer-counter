@@ -19,9 +19,49 @@ export function countTypesForNodes(
     _nodes = [..._nodes, ...nodes.flatMap(getAllChildrenNodes)];
   }
 
-  // TODO handle variant logic
-  shouldIncludeVariants;
+  // TODO Handle variant logic
+  // TODO Should this happen before counting children?
+  //      Probably right, so that you include variant children too?
   if (shouldIncludeVariants) {
+    // Multiple components/instances could belong to the same ComponentSetNode
+    // Currently, I'm choosing to dedupe ComponentSetNodes.
+
+    // TODO I think there's going to be a bug of dupes when variant and children are enabled
+    //      Simple test would be enable both and then select a ComponentSetNode
+    //      Solution would be to dedupe all _nodes. It's easy too.
+
+    const uniqueCompenentSetNodes = new Set();
+
+    _nodes = [
+      ..._nodes,
+      ...nodes.flatMap(node => {
+        let componentSetNode: ComponentSetNode;
+
+        if (
+          node.type === "INSTANCE" &&
+          node.mainComponent.parent.type === "COMPONENT_SET"
+        ) {
+          componentSetNode = node.mainComponent.parent;
+        } else if (
+          node.type === "COMPONENT" &&
+          node.parent.type === "COMPONENT_SET"
+        ) {
+          componentSetNode = node.parent;
+        } else if (node.type === "COMPONENT_SET") {
+          componentSetNode = node;
+        } else {
+          return []; // early return
+        }
+
+        if (uniqueCompenentSetNodes.has(componentSetNode)) {
+          return [];
+        } else {
+          uniqueCompenentSetNodes.add(componentSetNode);
+          //.children returns readonly, so copying to remove that
+          return [...componentSetNode.children];
+        }
+      })
+    ];
   }
 
   const typeCounts = _nodes.reduce((accumulator, node) => {
