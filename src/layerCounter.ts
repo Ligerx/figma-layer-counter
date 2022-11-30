@@ -15,13 +15,15 @@ export function countTypesForNodes(
 ): TypeCounts {
   const obj: TypeCounts = {};
 
-  let _nodes = nodes;
+  let _nodes: SceneNode[] = nodes;
   if (shouldCountChildren) {
-    _nodes = nodes.flatMap(getNodeAndAllChildren);
+    _nodes = [..._nodes, ...nodes.flatMap(getAllChildrenNodes)];
   }
 
   // TODO handle variant logic
   shouldIncludeVariants;
+  if (shouldIncludeVariants) {
+  }
 
   const typeCounts = _nodes.reduce((accumulator, node) => {
     accumulator[node.type] = (accumulator[node.type] ?? 0) + 1;
@@ -31,12 +33,12 @@ export function countTypesForNodes(
   return typeCounts;
 }
 
-function getNodeAndAllChildren(node: SceneNode): SceneNode[] {
+function getAllChildrenNodes(node: SceneNode): SceneNode[] {
   if (supportsChildren(node)) {
     const children = node.findAll(() => true);
-    return [node, ...children];
+    return children;
   }
-  return [node];
+  return [];
 }
 
 /**
