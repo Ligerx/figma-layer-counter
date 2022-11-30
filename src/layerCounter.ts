@@ -19,9 +19,10 @@ export function countTypesForNodes(
     _nodes = [..._nodes, ...nodes.flatMap(getAllChildrenNodes)];
   }
 
-  // TODO Handle variant logic
   // TODO Should this happen before counting children?
   //      Probably right, so that you include variant children too?
+  // TODO Should variant ... only happen for remote ComponentSetNodes?
+  // Is not currently including the ComponentSetNode in the count unless it's being directly selected.
   if (shouldIncludeVariants) {
     // Multiple components/instances could belong to the same ComponentSetNode
     // Currently, I'm choosing to dedupe ComponentSetNodes.
@@ -29,6 +30,12 @@ export function countTypesForNodes(
     // TODO I think there's going to be a bug of dupes when variant and children are enabled
     //      Simple test would be enable both and then select a ComponentSetNode
     //      Solution would be to dedupe all _nodes. It's easy too.
+
+    // TODO also an issue of including variants of nested layers
+
+    // So I think the play is
+    // include all children first, then handle variant checking
+    // then dedupe variants, EXCEPT FOR when the user is directly selecting a variant?
 
     const uniqueCompenentSetNodes = new Set();
 
