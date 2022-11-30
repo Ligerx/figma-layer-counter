@@ -16,59 +16,37 @@ export function countTypesForNodes(
   let _nodes: SceneNode[] = nodes;
 
   if (shouldCountChildren) {
-    _nodes = [..._nodes, ...nodes.flatMap(getAllChildrenNodes)];
+    _nodes = [..._nodes, ...nodes.flatMap(getChildrenRecursive)];
   }
 
-  // TODO Should this happen before counting children?
-  //      Probably right, so that you include variant children too?
-  // TODO Should variant ... only happen for remote ComponentSetNodes?
-  // Is not currently including the ComponentSetNode in the count unless it's being directly selected.
   if (shouldIncludeVariants) {
-    // Multiple components/instances could belong to the same ComponentSetNode
-    // Currently, I'm choosing to dedupe ComponentSetNodes.
+    // Theoretically should work with both remote and local components/variants
 
-    // TODO I think there's going to be a bug of dupes when variant and children are enabled
-    //      Simple test would be enable both and then select a ComponentSetNode
-    //      Solution would be to dedupe all _nodes. It's easy too.
+    // One  tradeoff to simplify logic is to only include unique variant component references
+    // and don't worry about intentionally including dupes when the user selects a variant subcomponent and an instance of it
 
-    // TODO also an issue of including variants of nested layers
-
-    // So I think the play is
-    // include all children first, then handle variant checking
-    // then dedupe variants, EXCEPT FOR when the user is directly selecting a variant?
-
-    const uniqueCompenentSetNodes = new Set();
-
-    _nodes = [
-      ..._nodes,
-      ...nodes.flatMap(node => {
-        let componentSetNode: ComponentSetNode;
-
-        if (
-          node.type === "INSTANCE" &&
-          node.mainComponent.parent.type === "COMPONENT_SET"
-        ) {
-          componentSetNode = node.mainComponent.parent;
-        } else if (
-          node.type === "COMPONENT" &&
-          node.parent.type === "COMPONENT_SET"
-        ) {
-          componentSetNode = node.parent;
-        } else if (node.type === "COMPONENT_SET") {
-          componentSetNode = node;
-        } else {
-          return []; // early return
-        }
-
-        if (uniqueCompenentSetNodes.has(componentSetNode)) {
-          return [];
-        } else {
-          uniqueCompenentSetNodes.add(componentSetNode);
-          //.children returns readonly, so copying to remove that
-          return [...componentSetNode.children];
-        }
-      })
+    // Dedupe repeated ComponentSetNodes.
+    // Duplicates could be caused by selecting multiple instances of the same variant,
+    // having nested layers (if enabled) with instances of the same variant,
+    // or selecting a component in the ComponentSetNode and an instance of a component in the same ComponentSetNode.
+    const uniqueComponentSetNodes = [
+      ...new Set(
+        _nodes
+          .map(getComponentSetNodeFromNode)
+          .filter(nodeOrNull => nodeOrNull != null)
+      )
     ];
+
+    let variantNodes: SceneNode[];
+    if (shouldCountChildren) {
+      variantNodes = uniqueComponentSetNodes
+        .flatMap(node => node.children)
+        .flatMap(getChildrenRecursive);
+    } else {
+      variantNodes = uniqueComponentSetNodes.flatMap(node => node.children);
+    }
+
+    _nodes = [..._nodes, ...variantNodes];
   }
 
   const typeCounts = _nodes.reduce((accumulator, node) => {
@@ -79,9 +57,9 @@ export function countTypesForNodes(
   return typeCounts;
 }
 
-function getAllChildrenNodes(node: SceneNode): SceneNode[] {
+function getChildrenRecursive(node: SceneNode): SceneNode[] {
   if (supportsChildren(node)) {
-    const children = node.findAll(() => true);
+    const children = node.findAll(() => true); // traverses the full layer tree under `node`
     return children;
   }
   return [];
@@ -112,6 +90,29 @@ function supportsChildren(
     node.type === "COMPONENT_SET" ||
     node.type === "SECTION"
   );
+}
+
+function getComponentSetNodeFromNode(node): ComponentSetNode | null {
+  if (
+    node.type === "INSTANCE" &&
+    node.mainComponent.parent.type === "COMPONENT_SET"
+  ) {
+    return node.mainComponent.parent;
+  } else if (
+    node.type === "COMPONENT" &&
+    node.parent.type === "COMPONENT_SET"
+  ) {
+    return node.parent;
+  }
+  // I think that selecting a ComponentSetNode should not include its sub-components
+  // since the set contains variants but is not a variant itself.
+  //
+  // else if (node.type === "COMPONENT_SET") {
+  //   return node;
+  // }
+  else {
+    return null;
+  }
 }
 
 /**
