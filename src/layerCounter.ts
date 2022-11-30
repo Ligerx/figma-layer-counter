@@ -13,9 +13,8 @@ export function countTypesForNodes(
   nodes: SceneNode[],
   { shouldCountChildren, shouldIncludeVariants }: CountSettings
 ): TypeCounts {
-  const obj: TypeCounts = {};
-
   let _nodes: SceneNode[] = nodes;
+
   if (shouldCountChildren) {
     _nodes = [..._nodes, ...nodes.flatMap(getAllChildrenNodes)];
   }
@@ -28,7 +27,7 @@ export function countTypesForNodes(
   const typeCounts = _nodes.reduce((accumulator, node) => {
     accumulator[node.type] = (accumulator[node.type] ?? 0) + 1;
     return accumulator;
-  }, obj);
+  }, {} as TypeCounts);
 
   return typeCounts;
 }
