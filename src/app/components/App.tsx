@@ -110,7 +110,7 @@ const App = ({}) => {
           checked={shouldIncludeVariants}
         />
         <label className="checkbox__label" htmlFor="include-variants-checkbox">
-          Include variants
+          Include unique variants
         </label>
       </div>
 
