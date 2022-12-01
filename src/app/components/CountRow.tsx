@@ -25,6 +25,9 @@ const typeToIcon = {
   POLYGON: "icon--polygon",
   RECTANGLE: "icon--rectangle",
   BOOLEAN_OPERATION: "icon--boolean-operation"
+
+  // if the type/icon can't be found, it just appears as empty and the layout works fine.
+  // unintentional but sufficient behavior.
 };
 
 const CountRow = ({ type, count, ...otherProps }: Props) => {
