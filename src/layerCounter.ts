@@ -18,17 +18,15 @@ export function countTypesForNodes(
   if (shouldCountChildren) {
     _nodes = [..._nodes, ...nodes.flatMap(getChildrenRecursive)];
   }
+  console.log(_nodes);
 
   if (shouldIncludeVariants) {
     // Theoretically should work with both remote and local components/variants
 
-    // One  tradeoff to simplify logic is to only include unique variant component references
-    // and don't worry about intentionally including dupes when the user selects a variant subcomponent and an instance of it
-
     // Dedupe repeated ComponentSetNodes.
     // Duplicates could be caused by selecting multiple instances of the same variant,
     // having nested layers (if enabled) with instances of the same variant,
-    // or selecting a component in the ComponentSetNode and an instance of a component in the same ComponentSetNode.
+    // or selecting a component in the ComponentSetNode and a component or instance in the same ComponentSetNode.
     const uniqueComponentSetNodes = [
       ...new Set(
         _nodes
@@ -36,18 +34,31 @@ export function countTypesForNodes(
           .filter(nodeOrNull => nodeOrNull != null)
       )
     ];
+    console.log(uniqueComponentSetNodes);
 
-    let variantNodes: SceneNode[];
+    // One tradeoff to simplify logic is to only include unique variant component references
+    // and don't worry about intentionally including dupes when the user selects a variant subcomponent and an instance of it
+    let variantNodes: SceneNode[] = uniqueComponentSetNodes.flatMap(
+      node => node.children
+    );
     if (shouldCountChildren) {
-      variantNodes = uniqueComponentSetNodes
-        .flatMap(node => node.children)
-        .flatMap(getChildrenRecursive);
-    } else {
-      variantNodes = uniqueComponentSetNodes.flatMap(node => node.children);
+      variantNodes = [
+        ...variantNodes,
+        ...variantNodes.flatMap(getChildrenRecursive)
+      ];
     }
+    // if (shouldCountChildren) {
+    //   variantNodes = uniqueComponentSetNodes
+    //     .flatMap(node => node.children)
+    //     .flatMap(getChildrenRecursive);
+    // } else {
+    //   variantNodes = uniqueComponentSetNodes.flatMap(node => node.children);
+    // }
+    console.log(variantNodes);
 
     _nodes = [..._nodes, ...variantNodes];
   }
+  console.log(shouldCountChildren, shouldIncludeVariants, _nodes);
 
   const typeCounts = _nodes.reduce((accumulator, node) => {
     accumulator[node.type] = (accumulator[node.type] ?? 0) + 1;
