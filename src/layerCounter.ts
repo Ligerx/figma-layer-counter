@@ -96,13 +96,17 @@ function supportsChildren(
 }
 
 function getComponentSetNodeFromNode(node): ComponentSetNode | null {
+  // FigJam doesn't have a top level PageNode, so you need to double check that a component's parent isn't null
+  // Can't rely on it just going up to PageNode.
   if (
     node.type === "INSTANCE" &&
+    node.mainComponent.parent != null &&
     node.mainComponent.parent.type === "COMPONENT_SET"
   ) {
     return node.mainComponent.parent;
   } else if (
     node.type === "COMPONENT" &&
+    node.parent != null &&
     node.parent.type === "COMPONENT_SET"
   ) {
     return node.parent;
