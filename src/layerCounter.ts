@@ -18,7 +18,6 @@ export function countTypesForNodes(
   if (shouldCountChildren) {
     _nodes = [..._nodes, ...nodes.flatMap(getChildrenRecursive)];
   }
-  console.log(_nodes);
 
   if (shouldIncludeVariants) {
     // Theoretically should work with both remote and local components/variants
@@ -34,7 +33,6 @@ export function countTypesForNodes(
           .filter(nodeOrNull => nodeOrNull != null)
       )
     ];
-    console.log(uniqueComponentSetNodes);
 
     let variantNodes: SceneNode[] = uniqueComponentSetNodes.flatMap(
       node => node.children
@@ -46,8 +44,6 @@ export function countTypesForNodes(
       ];
     }
 
-    console.log(variantNodes);
-
     // combine variants and other nodes, then dedupe
     // Duplication can occur when selecting an instance and also a component in the set, or selecting the ComponentSetNode itself.
     //
@@ -55,7 +51,6 @@ export function countTypesForNodes(
     // and doesn't worry about intentionally including dupes when the user selects a variant subcomponent and an instance variant in the same set.
     _nodes = [...new Set([..._nodes, ...variantNodes])];
   }
-  console.log(shouldCountChildren, shouldIncludeVariants, _nodes);
 
   const typeCounts = _nodes.reduce((accumulator, node) => {
     accumulator[node.type] = (accumulator[node.type] ?? 0) + 1;
