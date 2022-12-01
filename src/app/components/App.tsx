@@ -67,7 +67,7 @@ const App = ({}) => {
       // Fall back on sorting alphabetically
       return aKey.localeCompare(bKey);
     }
-  ) as [SceneNodeType, number][];
+  ) as Array<[SceneNodeType, number]>;
 
   return (
     <div className="app">
