@@ -36,8 +36,6 @@ export function countTypesForNodes(
     ];
     console.log(uniqueComponentSetNodes);
 
-    // One tradeoff to simplify logic is to only include unique variant component references
-    // and don't worry about intentionally including dupes when the user selects a variant subcomponent and an instance of it
     let variantNodes: SceneNode[] = uniqueComponentSetNodes.flatMap(
       node => node.children
     );
@@ -47,16 +45,15 @@ export function countTypesForNodes(
         ...variantNodes.flatMap(getChildrenRecursive)
       ];
     }
-    // if (shouldCountChildren) {
-    //   variantNodes = uniqueComponentSetNodes
-    //     .flatMap(node => node.children)
-    //     .flatMap(getChildrenRecursive);
-    // } else {
-    //   variantNodes = uniqueComponentSetNodes.flatMap(node => node.children);
-    // }
+
     console.log(variantNodes);
 
-    _nodes = [..._nodes, ...variantNodes];
+    // combine variants and other nodes, then dedupe
+    // Duplication can occur when selecting an instance and also a component in the set, or selecting the ComponentSetNode itself.
+    //
+    // One tradeoff of this dedupe logic is it only includes unique variant component references
+    // and doesn't worry about intentionally including dupes when the user selects a variant subcomponent and an instance variant in the same set.
+    _nodes = [...new Set([..._nodes, ...variantNodes])];
   }
   console.log(shouldCountChildren, shouldIncludeVariants, _nodes);
 
